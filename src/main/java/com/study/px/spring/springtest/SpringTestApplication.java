@@ -8,12 +8,14 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.ImportResource;
 
 import javax.servlet.Filter;
 
 @SpringBootApplication(scanBasePackages = "com.study.px.spring.springtest")
 @MapperScan("com.study.px.spring.springtest.orm.mapper")
 @EnableAspectJAutoProxy(exposeProxy = true)
+@ImportResource({"classpath:dubbo-consumer.xml"})
 public class SpringTestApplication {
 
     public static void main(String[] args) {

@@ -18,5 +18,7 @@ public interface TestService {
 
     void test4();
 
-    List<Channel> test1(int i);
+    List<Channel> test1(long i);
+
+    void callbackTest();
 }

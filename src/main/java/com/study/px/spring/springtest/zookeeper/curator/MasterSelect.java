@@ -15,6 +15,10 @@ import com.study.px.spring.springtest.zookeeper.RecipesNoLock ;
  **/
 public class MasterSelect {
 
+    //java ...
+    //zkClient ...
+    //curator...
+
     static String path = "/master_path";
 
     static CuratorFramework client = CuratorFrameworkFactory.builder()

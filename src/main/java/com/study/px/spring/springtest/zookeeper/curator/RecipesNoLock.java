@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
 public class RecipesNoLock {
     final static String url = "192.168.46.128:2181";
 
-    static final String path = "recipes_lock_path";
+    static final String path = "/recipes_lock_path";
     static CuratorFramework client = CuratorFrameworkFactory
             .builder()
             .connectString(url)
@@ -32,7 +32,7 @@ public class RecipesNoLock {
             new Thread(()->{
                 try {
                     countDownLatch.await();
-                    interProcessMutex.acquire();
+                    interProcessMutex.acquire();//AQS cas
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -45,6 +45,11 @@ public class RecipesNoLock {
                     e.printStackTrace();
                 }
             }).start();
+        }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         countDownLatch.countDown();
     }

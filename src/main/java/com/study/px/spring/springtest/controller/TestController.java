@@ -1,25 +1,24 @@
 package com.study.px.spring.springtest.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.study.px.spring.springtest.IgnoreToken;
 import com.study.px.spring.springtest.MyException;
-import com.study.px.spring.springtest.orm.mapper.ChannelMapper;
 import com.study.px.spring.springtest.orm.model.Channel;
-import com.study.px.spring.springtest.orm.model.ChannelExample;
 import com.study.px.spring.springtest.service.TestService;
 import com.study.px.spring.springtest.vo.PageVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -43,11 +42,17 @@ public class TestController{
 
     @IgnoreToken
     @GetMapping("test1")
-    public String test1(){
-        testService.test1(1000);
+    public String test1(HttpServletResponse response){
+        List<Channel> channels = testService.test1(1000);
         System.out.println("test1");
-        String s = "123";
-        return s;
+//        String s = "123";
+        try {
+            response.sendRedirect("https://www.baidu.com/");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return "redirect:" +"https://www.baidu.com/";
+        return "";
     }
 
     @IgnoreToken
@@ -84,6 +89,12 @@ public class TestController{
             System.out.println(defaultMessage);
         }
         return "333";
+    }
+
+    @GetMapping("callbackTest")
+    public String callbackTest(){
+        testService.callbackTest();
+        return "callbackTest";
     }
 
 }

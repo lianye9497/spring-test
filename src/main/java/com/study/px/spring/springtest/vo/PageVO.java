@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class PageVO {
+public class PageVO<T> {
 
     private Integer pageSize;
 
