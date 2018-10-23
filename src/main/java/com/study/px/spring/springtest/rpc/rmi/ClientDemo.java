@@ -1,5 +1,6 @@
 package com.study.px.spring.springtest.rpc.rmi;
 
+import com.github.pagehelper.util.StringUtil;
 import com.px.study.moremodule.client.rpc.rmi.HelloService;
 
 import java.net.MalformedURLException;
@@ -15,8 +16,9 @@ import java.rmi.RemoteException;
  **/
 public class ClientDemo {
     public static void main(String[] args) {
+
         try {
-            Remote lookup = Naming.lookup("rmi://192.168.46.1:1099/test");
+//            Remote lookup = Naming.lookup("rmi://192.168.46.1:1099/test");
             HelloService helloService = (HelloService) Naming.lookup("rmi://192.168.46.1:1099/test");
             System.out.println(1);
             Thread.sleep(2000);

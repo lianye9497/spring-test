@@ -24,6 +24,7 @@ public class JDKProxyTest {
 //            e.printStackTrace();
 //        }
 
+        //保存 $Proxy0.class到根目录下 com.sun.proxy.$Proxy0
         System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
 
 
