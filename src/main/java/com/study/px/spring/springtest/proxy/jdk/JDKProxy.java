@@ -21,6 +21,7 @@ public class JDKProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//        return method.invoke(proxy,args);//死循环
         return method.invoke(object, args);
     }
 }

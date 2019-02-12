@@ -13,17 +13,6 @@ import java.lang.reflect.Proxy;
 public class JDKProxyTest {
 
     public static void main(String[] args) {
-//        new JDKProxyTest();
-
-//        ProxyTestService person = null;
-//        try {
-//            person = (ProxyTestService) new JDKProxy().getInstance(new ProxyTestServiceImpl());
-//            String ss = person.test("ss");
-//            System.out.println(ss);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         //保存 $Proxy0.class到根目录下 com.sun.proxy.$Proxy0
         System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
 
