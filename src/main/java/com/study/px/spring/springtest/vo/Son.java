@@ -3,7 +3,9 @@ package com.study.px.spring.springtest.vo;
 
 
 
+import com.alibaba.fastjson.JSON;
 import org.apache.http.client.utils.DateUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -11,7 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Son extends Father{
+public class Son extends Father implements Cloneable{
 
     public String name = "son";
 
@@ -33,8 +35,12 @@ public class Son extends Father{
         this.sex = sex;
     }
 
-    public static void main(String[] args) {
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
+    public static void main(String[] args) {
         Date date = new Date();
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
@@ -127,15 +133,15 @@ public class Son extends Father{
 // 对于什么时候会在常量池存储字符串对象，我想我们可以基本得出结论: 1. 显示调用String的intern方法的时候; 2. 直接声明字符串字面常量的时候，例如: String a = "aaa";
 // 3. 字符串直接常量相加的时候，例如: String c = "aa" + "bb";  其中的aa/bb只要有任何一个不是字符串字面常量形式，都不会在常量池生成"aabb". 且此时jvm做了优化，不//   会同时生成"aa"和"bb"在字符串常量池中
 
-
-        Father son = new Son();
-        Son son1 = new Son();
-        System.out.println("son===" + son.name + ",getname==" + son.getName()
-        + "，age=="+son.age + ", getAge==" + son.getAge()
-                + "，sex== Father son无法访问sex字段,但是能访问子类的方法" + ", getAge==" + son.getAge());
-        System.out.println("son1===" + son1.name + ",getname==" + son1.getName()
-                + "，age=="+son1.age+ ", getAge==" + son1.getAge()
-                + "，sex=="+son1.sex+ ", getAge==" + son1.getSex());
+//
+//        Father son = new Son();
+//        Son son1 = new Son();
+//        System.out.println("son===" + son.name + ",getname==" + son.getName()
+//        + "，age=="+son.age + ", getAge==" + son.getAge()
+//                + "，sex== Father son无法访问sex字段,但是能访问子类的方法" + ", getAge==" + son.getAge());
+//        System.out.println("son1===" + son1.name + ",getname==" + son1.getName()
+//                + "，age=="+son1.age+ ", getAge==" + son1.getAge()
+//                + "，sex=="+son1.sex+ ", getAge==" + son1.getSex());
 
     }
 

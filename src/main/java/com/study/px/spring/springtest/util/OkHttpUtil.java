@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -24,9 +27,35 @@ public class OkHttpUtil {
         return new OkHttpClient.Builder().build();
     }
 
-    private static OkHttpClient getClient(long timeout) {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+    public static OkHttpClient getClient(long timeout) {
+
+        OkHttpClient.Builder builder =
+                new OkHttpClient.Builder()
                 .connectTimeout(timeout, TimeUnit.MILLISECONDS);
+//        new OkHttpClient.Builder()
+//                .cookieJar(new CookieJar() {
+//                    private final HashMap<HttpUrl, List<Cookie>> cookieStore = new HashMap<>();
+//
+//                    @Override
+//                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+//                        cookieStore.put(url, cookies);
+//                        cookieStore.put(HttpUrl.parse("http://192.168.31.231:8080/shiro-2"), cookies);
+//                        for(Cookie cookie:cookies){
+//                            System.out.println("cookie Name:"+cookie.name());
+//                            System.out.println("cookie Path:"+cookie.path());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public List<Cookie> loadForRequest(HttpUrl httpUrl) {
+////                        List<Cookie> cookies = cookieStore.get(httpUrl);
+//                        List<Cookie> cookies = cookieStore.get(HttpUrl.parse("http://192.168.31.231:8080/shiro-2"));
+//                        if(cookies==null){
+//                            System.out.println("没加载到cookie");
+//                        }
+//                        return cookies != null ? cookies : new ArrayList<>();
+//                    }
+//                });
         return builder.build();
     }
 
@@ -67,20 +96,43 @@ public class OkHttpUtil {
         url = handleUrl(url, urlParams);
         OkHttpClient okHttpClient = getClient(5000);
         Request request = getRequest(url, null, headers);
-        Call call = okHttpClient.newCall(request);
-        try (Response response = call.execute()) {
-            if (response.code() == 200) {
-                String result = response.body().string();
-                return result;
-            }
-            return "";
-        } catch (IOException e) {
-            log.error("OkHttpUtil.requestOfGet请求异常：", e);
-        } catch (Exception ex) {
-            log.error("OkHttpUtil.requestOfGet其他异常信息：", ex);
-        }
-        return "";
+        return doConnection(okHttpClient, request);
     }
+
+    public static String requestOfPost(String url, Map<String, String> urlParams, Map<String, String> headers) {
+        OkHttpClient okHttpClient = getClient(5000);
+        MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
+        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(urlParams));
+        Request request = getRequest(url, body, headers);
+        return doConnection(okHttpClient, request);
+    }
+
+    public static String requestOfFormPost(String url, Map<String, String> urlParams, Map<String, String> headers) {
+        OkHttpClient okHttpClient = getClient(5000);
+        FormBody.Builder builder = new FormBody.Builder();
+        for (String key : urlParams.keySet()) {
+            builder.addEncoded(key,urlParams.get(key));
+        }
+        Request request = getRequest(url, builder.build(), headers);
+        return doConnection(okHttpClient, request);
+    }
+
+    private static String doConnection(OkHttpClient okHttpClient, Request request) {
+        Response response = null;
+        try {
+            response = okHttpClient.newCall(request).execute();
+            if (response.code() == 200) {
+                Headers headers = response.headers();
+                Map<String, List<String>> stringListMap = headers.toMultimap();
+                System.out.println(JSON.toJSONString(stringListMap));
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            log.error("OkHttpUtil.requestOfPost请求异常：", e);
+        }
+        return null;
+    }
+
 
     public static String requestOfPost(String url, Map<String, String> urlParams) {
         OkHttpClient okHttpClient = getClient(5000);
@@ -90,16 +142,7 @@ public class OkHttpUtil {
                 .url(url)
                 .post(body)
                 .build();
-        Response response = null;
-        try {
-            response = okHttpClient.newCall(request).execute();
-            if (response.code() == 200) {
-                return response.body().string();
-            }
-        } catch (IOException e) {
-            log.error("OkHttpUtil.requestOfPost请求异常：", e);
-        }
-        return null;
+        return doConnection(okHttpClient, request);
     }
 
 }

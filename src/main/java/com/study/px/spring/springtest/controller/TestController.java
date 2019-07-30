@@ -12,6 +12,8 @@ import com.study.px.spring.springtest.MyException;
 import com.study.px.spring.springtest.orm.model.Channel;
 import com.study.px.spring.springtest.service.TestService;
 import com.study.px.spring.springtest.vo.PageVO;
+import com.study.px.spring.springtest.vo.Son;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -57,15 +59,17 @@ public class TestController {
     }
 
     public static void main(String[] args) {
-        List<String> list = new ArrayList<String>();
-        list.add("1");
-        list.add("2");
-        for (String item : list) {
-            if ("2".equals(item)) {
-                list.remove(item);
-            }
-        }
-        System.out.println(list.toString());
+
+
+//        List<String> list = new ArrayList<String>();
+//        list.add("1");
+//        list.add("2");
+//        for (String item : list) {
+//            if ("2".equals(item)) {
+//                list.remove(item);
+//            }
+//        }
+//        System.out.println(list.toString());
     }
 
     @IgnoreToken
